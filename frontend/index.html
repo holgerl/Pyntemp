@@ -12,8 +12,21 @@
         Pyntemp.start();
       });
     </script>
+	<style>
+		#loading {
+			position: absolute;
+			top: 10em;
+			left: 10em;
+			z-index: -1000;
+		}
+		
+		div {
+			background-color: white;
+		}
+	</style>
 </head>
 <body>
+	<div id="loading"><img src="img/loading.gif"/> Loading ...</div>
 	<div id="header"></div>
 	<div id="sensors"></div>
 	<div id="devices"></div>
