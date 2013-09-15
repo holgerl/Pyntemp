@@ -8,6 +8,8 @@ var util = require('util');
 //Pyntemp.Telldus = require('./telldus.js');
 Pyntemp.Telldus = require('./mock-telldus.js');
 
+Pyntemp.Rules = require('./rules.js');
+
 http.createServer(function (request, response) {
 	var parsedUrl = url.parse(request.url, true);
 	
@@ -26,6 +28,17 @@ http.createServer(function (request, response) {
 	} else if (parsedUrl.pathname== "/stopDevice") {
 		var deviceid = parsedUrl.query.id;
 		Pyntemp.Telldus.startDevice(false, deviceid, Pyntemp.writeJson(response));
+	} else if (parsedUrl.pathname== "/rules") {
+		Pyntemp.Rules.getRules(Pyntemp.writeJson(response));
+	} else if (parsedUrl.pathname== "/addRule") {
+		var deviceId = parsedUrl.query.deviceId;
+		var sensorId = parsedUrl.query.sensorId;
+		var onThreshold = parsedUrl.query.onThreshold;
+		var offThreshold = parsedUrl.query.offThreshold;
+		Pyntemp.Rules.addRule(new Pyntemp.Rules.Rule(deviceId, sensorId, onThreshold, offThreshold), Pyntemp.writeJson(response));
+	} else if (parsedUrl.pathname== "/removeRule") {
+		var index = parsedUrl.query.index;
+		Pyntemp.Rules.removeRule(index, Pyntemp.writeJson(response));
 	} else {
 		fs.readFile('../frontend' + request.url, function(error, content) {
 	        if (error) {

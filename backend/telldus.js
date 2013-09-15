@@ -2,6 +2,7 @@ var Pyntemp = {};
 Pyntemp.Telldus = {};
 
 Pyntemp.Sensor = function (sensor) {
+	this.id = sensor.id;
 	this.name = sensor.name;
 	this.temperature = sensor.temp;
 	this.humidity = sensor.humidity;
@@ -35,7 +36,7 @@ Pyntemp.Telldus.getSensorList = function (callback) {
 			var listLength = data.sensor.length;
 			for (var sensor in data.sensor) {
 				Pyntemp.Telldus.getResource("sensor/info?id=" + data.sensor[sensor].id, function (data) {
-					sensors.push(new Pyntemp.Sensor({name:data.name, temp: data.data[0].value, humidity: data.data[1].value }));
+					sensors.push(new Pyntemp.Sensor({id: data.id, name:data.name, temp: data.data[0].value, humidity: data.data[1].value }));
 					if (sensors.length == listLength) {
 						callback(sensors);	
 					}

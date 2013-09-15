@@ -1,20 +1,9 @@
 var Pyntemp = {};
 Pyntemp.Telldus = {};
 
-var logMembers = function(object) {
-	var string = "{";
-	for (var member in object) {
-		string += "\n" + member + ": " + object[member] + "\n";
-	}
-	if (string.length > 1) string += "\n"
-	string += "}";
-	console.log(string);
-	return string;
-}
-
 Pyntemp.Telldus.getSensorList = function (callback) {
 	console.log("called getSensorList on MOCK");
-	callback({"sensors":[{"name":"[MOCK] Temp Pynten gang ute","temperature":"16.2","humidity":"72"},{"name":"[MOCK] Temp Pynten gang inne","temperature":"21.3","humidity":"61"}],"length":2});
+	callback({"sensors":[{"id":"244836","name":"[MOCK] Temp Pynten gang inne","temperature":"21.2","humidity":"61"},{"id":"204198","name":"[MOCK] Temp Pynten gang ute","temperature":"15.1","humidity":"84"}],"length":2});
 }
 
 Pyntemp.Telldus.getDevices = function (callback) {
