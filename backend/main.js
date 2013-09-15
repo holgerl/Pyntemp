@@ -8,6 +8,11 @@ var util = require('util');
 
 http.createServer(function (request, response) {
 	var parsedUrl = url.parse(request.url, true);
+	
+	if (parsedUrl.pathname == "/") {
+		response.writeHead(302, {'Location': 'index.html'});
+		response.end();
+	}
 
 	if (parsedUrl.pathname == "/sensors") {
 		Pyntemp.Telldus.getSensorList(Pyntemp.writeJson(response));
