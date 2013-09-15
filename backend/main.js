@@ -5,7 +5,8 @@ var fs = require('fs');
 var url = require("url");
 var util = require('util');
 
-Pyntemp.Telldus = require('./telldus.js');
+//Pyntemp.Telldus = require('./telldus.js');
+Pyntemp.Telldus = require('./mock-telldus.js');
 
 http.createServer(function (request, response) {
 	var parsedUrl = url.parse(request.url, true);
