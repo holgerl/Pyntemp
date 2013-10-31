@@ -35,8 +35,8 @@ http.createServer(function (request, response) {
 		var sensorId = parsedUrl.query.sensorId;
 		var deviceName = parsedUrl.query.deviceName;
 		var sensorName = parsedUrl.query.sensorName;
-		var onThreshold = parsedUrl.query.onThreshold;
-		var offThreshold = parsedUrl.query.offThreshold;
+		var onThreshold = parseInt(parsedUrl.query.onThreshold);
+		var offThreshold = parseInt(parsedUrl.query.offThreshold);
 		Pyntemp.Rules.addRule(new Pyntemp.Rules.Rule(deviceId, sensorId, deviceName, sensorName, onThreshold, offThreshold), Pyntemp.writeJson(response));
 	} else if (parsedUrl.pathname== "/removeRule") {
 		var index = parsedUrl.query.index;
@@ -63,4 +63,29 @@ Pyntemp.writeJson = function(response) {
 	}
 }
 
+Pyntemp.getDateString = function() {
+	var addZeroIfShort = function(number) {
+		return number < 10 ? "0"+number : number;
+	}
+	var currentdate = new Date();
+	var year = addZeroIfShort(currentdate.getFullYear());
+	var month = addZeroIfShort((currentdate.getMonth()+1));
+	var date = addZeroIfShort(currentdate.getDate());
+	var hours = addZeroIfShort(currentdate.getHours());
+	var minutes = addZeroIfShort(currentdate.getMinutes());
+	var seconds = addZeroIfShort(currentdate.getSeconds());
+	return year + "-" + month + "-" + date + " " + hours + ":" + minutes + ":" + seconds;
+}
+
+Pyntemp.intervalFunction = function() {
+	console.log("-- " + Pyntemp.getDateString() + " --");
+	Pyntemp.Telldus.getSensorList(function(sensors) {
+		Pyntemp.Telldus.getDevices(function(devices) {
+			Pyntemp.Rules.evaluateRules(sensors.sensors, devices.devices, Pyntemp.Telldus);
+		});
+	});
+}
+
+Pyntemp.intervalFunction();
+setInterval(Pyntemp.intervalFunction, 1000*5);
 

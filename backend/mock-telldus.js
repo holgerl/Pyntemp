@@ -3,7 +3,10 @@ Pyntemp.Telldus = {};
 
 Pyntemp.Telldus.getSensorList = function (callback) {
 	console.log("called getSensorList on MOCK");
-	callback({"sensors":[{"id":"244836","name":"[MOCK] Temp Pynten gang inne","temperature":"21.2","humidity":"61"},{"id":"204198","name":"[MOCK] Temp Pynten gang ute","temperature":"15.1","humidity":"84"}],"length":2});
+	callback({"sensors":[
+		{"id":"244836","name":"[MOCK] Temp Pynten gang inne","temperature":"21.2","humidity":"61"},
+		{"id":"204198","name":"[MOCK] Temp Pynten gang ute","temperature":"15.1","humidity":"84"}
+	],"length":2});
 }
 
 Pyntemp.Telldus.getDevices = function (callback) {

@@ -65,10 +65,38 @@ var getRules = function(callback) {
 	}); 
 }
 
-var evaluateRules = function() {
+var evaluateRules = function(sensorList, deviceList, Telldus) {
+	var sensorMap = mapify(sensorList, function(sensor) {return sensor.id});
+	var deviceMap = mapify(deviceList, function(device) {return device.id});
 	readRules(function(rules) {
-		
+		for (var index in rules) {
+			var rule = rules[index];
+			var sensor = sensorMap[rule.sensorId];
+			var device = deviceMap[rule.deviceId];
+			var temperature = parseInt(sensor.temperature);
+			var verboseText = " (" + sensor.name + " was " + temperature + " °C)";
+			console.log("EVALUATING RULE " + JSON.stringify(rule));
+			
+			if (temperature <= rule.onThreshold) {
+				console.log("-> TURNING ON " + device.name + verboseText);
+				Telldus.startDevice(true, device.id, function() {});
+			} else if (temperature >= rule.offThreshold) {
+				console.log("-> TURNING OFF " + device.name + verboseText);
+				Telldus.startDevice(false, device.id, function() {});
+			} else {
+				console.log("-> DID NOTHING " + device.name + verboseText);
+			}
+		}
 	});
+}
+
+var mapify = function(list, keyFunction) {
+	var map = {};
+	for (var index in list) {
+		var item = list[index];
+		map[keyFunction(item)] = item;
+	}
+	return map;
 }
 
 module.exports.Rule = Rule;
