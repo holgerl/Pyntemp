@@ -1,8 +1,10 @@
 var fs = require('fs');
 
-var Rule = function(deviceId, sensorId, onThreshold, offThreshold) {
+var Rule = function(deviceId, sensorId, deviceName, sensorName, onThreshold, offThreshold) {
 	this.deviceId = deviceId;
 	this.sensorId = sensorId;
+	this.deviceName = deviceName;
+	this.sensorName = sensorName;
 	this.onThreshold = onThreshold;
 	this.offThreshold = offThreshold;
 }
@@ -63,7 +65,14 @@ var getRules = function(callback) {
 	}); 
 }
 
+var evaluateRules = function() {
+	readRules(function(rules) {
+		
+	});
+}
+
 module.exports.Rule = Rule;
 module.exports.getRules = getRules;
 module.exports.addRule = addRule;
 module.exports.removeRule = removeRule;
+module.exports.evaluateRules = evaluateRules;

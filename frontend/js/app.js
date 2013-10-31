@@ -138,10 +138,12 @@
 	  var ruleAction = new Pyntemp.Rules.RuleAction();  
 	  this.el.on("click", "#saveRule", function(event) {
 		var deviceId = $('#selectDevice').find(":selected").attr("value");
+		var deviceName = $('#selectDevice').find(":selected").text();
 		var sensorId = $('#selectSensor').find(":selected").attr("value");
+		var sensorName = $('#selectSensor').find(":selected").text();
 		var onThreshold = $('#onThreshold').val();
 		var offThreshold = $('#offThreshold').val();
-        ruleAction.saveRule(deviceId, sensorId, onThreshold, offThreshold);
+        ruleAction.saveRule(deviceId, sensorId, deviceName, sensorName, onThreshold, offThreshold);
 		
 		ruleAction.on("fetch:finished", function() {window.location.reload()}, this);
       });
@@ -155,8 +157,8 @@
   Pyntemp.Rules.RuleAction = Simple.Model.extend({
     dataType: "json",
     initialize: function() {},
-    saveRule: function(deviceid, sensorId, onThreshold, offThreshold) {
-        this.url = "http://localhost:1337/addRule?deviceId=" + deviceid + "&sensorId=" + sensorId + "&onThreshold=" + onThreshold + "&offThreshold=" + offThreshold;  
+    saveRule: function(deviceid, sensorId, deviceName, sensorName, onThreshold, offThreshold) {
+        this.url = "http://localhost:1337/addRule?deviceId=" + deviceid + "&sensorId=" + sensorId + "&deviceName=" + deviceName + "&sensorName=" + sensorName + "&onThreshold=" + onThreshold + "&offThreshold=" + offThreshold;  
         this.fetch();
     },
     deleteRule: function(index) {
@@ -170,7 +172,7 @@
 		'<ul>' +
 			'{{#rules}}' +
 			'<li>' +
-				'Turn on <strong>{{deviceId}}</strong> if <strong>{{sensorId}}</strong> is lower than <strong>{{onThreshold}}</strong> &deg;C then turn it off when it reaches <strong>{{offThreshold}}</strong> &deg;C <input type="submit" value="delete"/>' +
+				'Turn on <strong>{{deviceName}}</strong> if <strong>{{sensorName}}</strong> is lower than <strong>{{onThreshold}}</strong> &deg;C then turn it off when it reaches <strong>{{offThreshold}}</strong> &deg;C <input type="submit" value="delete"/>' +
 			'</li>' +
 			'{{/rules}}' +
 		'</ul>',

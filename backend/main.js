@@ -33,9 +33,11 @@ http.createServer(function (request, response) {
 	} else if (parsedUrl.pathname== "/addRule") {
 		var deviceId = parsedUrl.query.deviceId;
 		var sensorId = parsedUrl.query.sensorId;
+		var deviceName = parsedUrl.query.deviceName;
+		var sensorName = parsedUrl.query.sensorName;
 		var onThreshold = parsedUrl.query.onThreshold;
 		var offThreshold = parsedUrl.query.offThreshold;
-		Pyntemp.Rules.addRule(new Pyntemp.Rules.Rule(deviceId, sensorId, onThreshold, offThreshold), Pyntemp.writeJson(response));
+		Pyntemp.Rules.addRule(new Pyntemp.Rules.Rule(deviceId, sensorId, deviceName, sensorName, onThreshold, offThreshold), Pyntemp.writeJson(response));
 	} else if (parsedUrl.pathname== "/removeRule") {
 		var index = parsedUrl.query.index;
 		Pyntemp.Rules.removeRule(index, Pyntemp.writeJson(response));
