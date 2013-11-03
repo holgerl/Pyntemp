@@ -1,1 +1,1 @@
-[{"deviceId":"22","sensorId":"2","onThreshold":"82","offThreshold":"2"},{"deviceId":"33","sensorId":"332","onThreshold":"333","offThreshold":"233"},{"deviceId":"33","sensorId":"332","onThreshold":"333","offThreshold":"233"},{"deviceId":"165525","sensorId":"244836","onThreshold":"0","offThreshold":"0"},{"deviceId":"165525","sensorId":"244836","onThreshold":"0","offThreshold":"0"},{"deviceId":"294750","sensorId":"244836","onThreshold":"4343","offThreshold":"0"}]
+[]
