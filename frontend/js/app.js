@@ -26,7 +26,7 @@
   Pyntemp.Sensors = Simple.Model.extend({
     dataType: "json",
     initialize: function() {
-        this.url = "http://localhost:1337/sensors";
+        this.url = "/sensors";
     }
   })
 
@@ -50,7 +50,7 @@
   Pyntemp.Devices = Simple.Model.extend({
     dataType: "json",
     initialize: function() {
-        this.url = "http://localhost:1337/devices";
+        this.url = "/devices";
     }
   })
 
@@ -87,11 +87,11 @@
     initialize: function() {
     },
     startDevice: function(deviceid) {
-        this.url = "http://localhost:1337/startDevice?id=" + deviceid;  
+        this.url = "/startDevice?id=" + deviceid;  
         this.fetch();
     },
     stopDevice: function(deviceid) {
-        this.url = "http://localhost:1337/stopDevice?id=" + deviceid; 
+        this.url = "/stopDevice?id=" + deviceid; 
         this.fetch(); 
     }
   });
@@ -105,7 +105,7 @@
   Pyntemp.Rules = Simple.Model.extend({
     dataType: "json",
     initialize: function() {
-        this.url = "http://localhost:1337/rules";
+        this.url = "/rules";
     }
   })
 
@@ -158,11 +158,11 @@
     dataType: "json",
     initialize: function() {},
     saveRule: function(deviceid, sensorId, deviceName, sensorName, onThreshold, offThreshold) {
-        this.url = "http://localhost:1337/addRule?deviceId=" + deviceid + "&sensorId=" + sensorId + "&deviceName=" + deviceName + "&sensorName=" + sensorName + "&onThreshold=" + onThreshold + "&offThreshold=" + offThreshold;  
+        this.url = "/addRule?deviceId=" + deviceid + "&sensorId=" + sensorId + "&deviceName=" + deviceName + "&sensorName=" + sensorName + "&onThreshold=" + onThreshold + "&offThreshold=" + offThreshold;  
         this.fetch();
     },
     deleteRule: function(index) {
-        this.url = "http://localhost:1337/removeRule?index=" + index; 
+        this.url = "/removeRule?index=" + index; 
         this.fetch(); 
     }
   });
