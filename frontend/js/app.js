@@ -1,6 +1,6 @@
 (function(Simple, Mustache) {
 
-  var Pyntemp = window.Pyntemp = {};
+  window.Pyntemp = window.Pyntemp || {};
 
   Pyntemp.start = function() {
     var sensors = new Pyntemp.Sensors();
@@ -11,14 +11,15 @@
     var el = $("#devices");
     var view = new Pyntemp.Devices.DevicesView({devices: devices, el: el});
 	
-    var el = $("#newrule");
-    var view = new Pyntemp.Rules.NewRuleView({devices: devices, sensors: sensors, el: el});
-	
     var rules = new Pyntemp.Rules();
     var el = $("#rules");
     var view = new Pyntemp.Rules.RulesView({rules: rules, el: el});
-	
-	rules.fetch();
+  
+    var el = $("#newrule");
+    var view = new Pyntemp.Rules.NewRuleView({devices: devices, sensors: sensors, el: el});
+  
+    
+	  rules.fetch();
     devices.fetch();
     sensors.fetch();
   }
@@ -31,7 +32,7 @@
   })
 
   Pyntemp.Sensors.SensorsView = Simple.View.extend({
-    template: '<h3>Sensors:</h3><ul>' + 
+    template: '<h3 class="accordianTrigger">Sensorer</h3><ul>' + 
       '{{#sensors}}' +
       '<li> {{name}} : {{temperature}} grader Celcius, {{humidity}} % luftfuktighet  </li>' +
       '{{/sensors}}' +
@@ -40,6 +41,8 @@
       this.sensors = options.sensors;
       this.sensors.on("fetch:finished", this.render, this);
       this.el = options.el;
+      this.el.on("click", ".accordianTrigger", Pyntemp.gui.toggleAccordian);
+
     },
     render: function() {
       var html = Mustache.to_html(this.template, this.sensors.attrs());
@@ -55,11 +58,14 @@
   })
 
   Pyntemp.Devices.DevicesView = Simple.View.extend({
-    template: '<h3>Devices:</h3><ul> ' + 
+    template: '<h3 class="accordianTrigger">Enheter</h3><ul class="list"> ' + 
       '{{#devices}}' +
-      '<li id="{{id}}"> {{name}}' + 
-      '<input type="button" id="{{id}}" class="startDeviceButton" value="Start"></input>' +
-      '<input type="button" id="{{id}}" class="stopDeviceButton" value="Stopp"></input>' +
+      '<li id="{{id}}">' + 
+      '<ul class="toggleButton">' + 
+        '<li><a id="{{id}}" class="stopDeviceButton" href="#">OFF</a></li>' + 
+        '<li class="on"><a id="{{id}}" class="startDeviceButton" href="#">ON</a></li>' +
+      '</ul>' +
+      '<span>{{name}}</span>' + 
       '</li>' +
       '{{/devices}}' +
       '</ul>',
@@ -74,6 +80,8 @@
       this.el.on("click", ".stopDeviceButton", function(event) {
         deviceAction.stopDevice(event.currentTarget.id);
       });
+      this.el.on("click", ".accordianTrigger", Pyntemp.gui.toggleAccordian);
+      this.el.on("click", "ul.toggleButton li", Pyntemp.gui.toggleButton);
     },
     render: function() {
       var html = Mustache.to_html(this.template, this.devices.attrs());
@@ -110,7 +118,7 @@
   })
 
   Pyntemp.Rules.NewRuleView = Simple.View.extend({
-    template: '<h3>New rule</h3>' +
+    template: '<h3 class="accordianTrigger">Lag ny regel</h3><div>' +
 		'Turn on ' + 
 		'<select id="selectDevice">' +
 		  '{{#devices}}' +
@@ -127,13 +135,15 @@
 		'<input id="onThreshold" size="2" type="text" value="0"/> &deg;C, ' +
 		'then turn it off when it reaches ' +
 		'<input id="offThreshold" size="2" type="text" value="0"/> &deg;C' +
-		' <input id="saveRule" type="submit" value="save"/>',
+		' <input id="saveRule" type="submit" value="save"/></div>',
     initialize: function(options) {
       this.sensors = options.sensors;
       this.sensors.on("fetch:finished", this.render, this);
       this.devices = options.devices;
       this.devices.on("fetch:finished", this.render, this);
       this.el = options.el;
+      this.el.on("click", ".accordianTrigger", Pyntemp.gui.toggleAccordian);
+
 	  
 	  var ruleAction = new Pyntemp.Rules.RuleAction();  
 	  this.el.on("click", "#saveRule", function(event) {
@@ -168,7 +178,7 @@
   });
   
   Pyntemp.Rules.RulesView = Simple.View.extend({
-    template: '<h3>Saved rules:</h3>' +
+    template: '<h3 class="accordianTrigger">Regler</h3>' +
 		'<ul>' +
 			'{{#rules}}' +
 			'<li>' +
@@ -180,6 +190,7 @@
       this.rules = options.rules;
       this.rules.on("fetch:finished", this.render, this);
       this.el = options.el;
+      this.el.on("click", ".accordianTrigger", Pyntemp.gui.toggleAccordian);
     },
     render: function() {
       var html = Mustache.to_html(this.template, this.rules.attrs());
