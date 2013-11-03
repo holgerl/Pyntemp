@@ -124,9 +124,10 @@ body {
 	font-size:16px;
 	font-family: Verdana;
 	line-height:  1.4em;
+	background: #7ced96;
 }
 
-h3 {
+a.accordianTrigger {
 	background: #07611C; /* Old browsers */
 	background-image: linear-gradient(bottom, #07611C 27%, #24AB4F 64%);
 	background-image: -o-linear-gradient(bottom, #07611C 27%, #24AB4F 64%);
@@ -135,6 +136,7 @@ h3 {
 	background-image: -ms-linear-gradient(bottom, #07611C 27%, #24AB4F 64%);
 
 	padding: 1em 2em;
+	display: block;
 }
 
 .accordian {
@@ -158,4 +160,25 @@ ul.list > li {
 ul li span {
 	float: left;
 	padding-top: 2px;
+}
+
+#header h1 {
+	font-weight: bold;
+	padding: 0.5em 1em;
+	font-size: 2em;
+}
+#footer {
+	padding: 50px 2em 1em;
+}
+
+.temperature {
+	background: transparent url(../img/temperature.jpeg) no-repeat 10px top;
+	background-size: 25px 25px;
+	padding-left: 40px;
+}
+
+.humidity {
+	background: transparent url(../img/humidity.jpeg) no-repeat 10px top;
+	background-size: 25px 25px;
+	padding-left: 40px;	
 }

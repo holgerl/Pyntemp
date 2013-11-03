@@ -1,1 +1,1 @@
-[{"deviceId":"298157","sensorId":"244836","deviceName":"[MOCK] Hestehagen 01 lys stue","sensorName":"[MOCK] Temp Pynten gang inne","onThreshold":4,"offThreshold":0}]
+[{"deviceId":"298157","sensorId":"244836","deviceName":"[MOCK] Hestehagen 01 lys stue","sensorName":"[MOCK] Temp Pynten gang inne","onThreshold":4,"offThreshold":0},{"deviceId":"298157","sensorId":"204198","deviceName":"[MOCK] Hestehagen 01 lys stue","sensorName":"[MOCK] Temp Pynten gang ute","onThreshold":3,"offThreshold":5}]

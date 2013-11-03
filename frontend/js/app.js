@@ -32,9 +32,9 @@
   })
 
   Pyntemp.Sensors.SensorsView = Simple.View.extend({
-    template: '<h3 class="accordianTrigger">Sensorer</h3><ul>' + 
+    template: '<a href="#sensors" class="accordianTrigger">Sensorer</a><ul class="list">' + 
       '{{#sensors}}' +
-      '<li> {{name}} : {{temperature}} grader Celcius, {{humidity}} % luftfuktighet  </li>' +
+      '<li> <span>{{name}}</span> <span class="temperature">{{temperature}} &deg;C </span> <span class="humidity">{{humidity}}%</span></li>' +
       '{{/sensors}}' +
       '</ul>',
     initialize: function(options) {
@@ -58,12 +58,12 @@
   })
 
   Pyntemp.Devices.DevicesView = Simple.View.extend({
-    template: '<h3 class="accordianTrigger">Enheter</h3><ul class="list"> ' + 
+    template: '<a href="#devices" class="accordianTrigger">Enheter</a><ul class="list"> ' + 
       '{{#devices}}' +
       '<li id="{{id}}">' + 
       '<ul class="toggleButton">' + 
         '<li><a id="{{id}}" class="stopDeviceButton" href="#">OFF</a></li>' + 
-        '<li class="on"><a id="{{id}}" class="startDeviceButton" href="#">ON</a></li>' +
+        '<li><a id="{{id}}" class="startDeviceButton" href="#">ON</a></li>' +
       '</ul>' +
       '<span>{{name}}</span>' + 
       '</li>' +
@@ -118,22 +118,22 @@
   })
 
   Pyntemp.Rules.NewRuleView = Simple.View.extend({
-    template: '<h3 class="accordianTrigger">Lag ny regel</h3><div>' +
-		'Turn on ' + 
+    template: '<a href="#newrule" class="accordianTrigger">Lag ny regel</a><div>' +
+		'Skru på ' + 
 		'<select id="selectDevice">' +
 		  '{{#devices}}' +
 		  '<option value="{{id}}">{{name}}</option>' +
           '{{/devices}}' +
 		'</select>' +
-		' if ' +
+		' hvis ' +
 		'<select id="selectSensor">' +
           '{{#sensors}}' +
 		  '<option value="{{id}}">{{name}}</option>' +
           '{{/sensors}}' +
 		'</select>' +
-		' is lower than ' +
+		' er lavere enn ' +
 		'<input id="onThreshold" size="2" type="text" value="0"/> &deg;C, ' +
-		'then turn it off when it reaches ' +
+		' skru av hvis den når ' +
 		'<input id="offThreshold" size="2" type="text" value="0"/> &deg;C' +
 		' <input id="saveRule" type="submit" value="save"/></div>',
     initialize: function(options) {
@@ -178,12 +178,15 @@
   });
   
   Pyntemp.Rules.RulesView = Simple.View.extend({
-    template: '<h3 class="accordianTrigger">Regler</h3>' +
-		'<ul>' +
+    template: '<a href="#rules" class="accordianTrigger">Regler</a>' +
+		'<ul class="list">' +
 			'{{#rules}}' +
 			'<li>' +
-				'Turn on <strong>{{deviceName}}</strong> if <strong>{{sensorName}}</strong> is lower than <strong>{{onThreshold}}</strong> &deg;C then turn it off when it reaches <strong>{{offThreshold}}</strong> &deg;C <input type="submit" value="delete"/>' +
-			'</li>' +
+				'Skru på <strong>{{deviceName}}</strong> hvis <strong>{{sensorName}}</strong> er lavere enn <strong>{{onThreshold}}</strong> &deg;C, skru av når den når <strong>{{offThreshold}}</strong> &deg;C' +
+         '<input type="submit" value="endre"/>' +
+			   '<input type="submit" value="deaktiver"/>' + 
+         '<input type="submit" value="slett"/>' +
+      '</li>' +
 			'{{/rules}}' +
 		'</ul>',
     initialize: function(options) {
