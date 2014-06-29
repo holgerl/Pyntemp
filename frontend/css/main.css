@@ -113,6 +113,16 @@ ul.toggleButton li.on a{
 
 /*Pynttemp css*/
 
+h1, h2, h3, h4, h5, h6, h7, h8 {
+	color: #003A21;
+}
+
+* {
+	color: #042037;
+	font-size:16px;
+	font-family: Verdana !important;
+}
+
 #loading {
 	position: absolute;
 	top: 10em;
@@ -121,19 +131,21 @@ ul.toggleButton li.on a{
 }
 
 body {
-	font-size:16px;
-	font-family: Verdana;
 	line-height:  1.4em;
-	background: #7ced96;
+	background: #277553;
+} 
+
+input {
+	margin-left: 10px;
 }
 
 a.accordianTrigger {
-	background: #07611C; /* Old browsers */
-	background-image: linear-gradient(bottom, #07611C 27%, #24AB4F 64%);
-	background-image: -o-linear-gradient(bottom, #07611C 27%, #24AB4F 64%);
-	background-image: -moz-linear-gradient(bottom, #07611C 27%, #24AB4F 64%);
-	background-image: -webkit-linear-gradient(bottom, #07611C 27%, #24AB4F 64%);
-	background-image: -ms-linear-gradient(bottom, #07611C 27%, #24AB4F 64%);
+	background: #29506D; /* Old browsers */
+	background-image: linear-gradient(top, #29506D 27%, #123652 64%);
+	background-image: -o-linear-gradient(top, #29506D 27%, #123652 64%);
+	background-image: -moz-linear-gradient(top, #29506D 27%, #123652 64%);
+	background-image: -webkit-linear-gradient(top, #29506D 27%, #123652 64%);
+	background-image: -ms-linear-gradient(top, #29506D 27%, #123652 64%);
 
 	padding: 1em 2em;
 	display: block;
@@ -141,6 +153,11 @@ a.accordianTrigger {
 
 .accordian {
 	clear: both;
+}
+
+.accordian a {
+	color: #718EA4 !important;
+	text-decoration: none !important;
 }
 
 .accordian > ul,
