@@ -13,12 +13,12 @@ process.cwd = process.cwd || function() {return ".."};
 
 var fileroot = process.cwd() + "/frontend";
 
-var sessions = require(fileroot + 'backend/lib/session.js');
+var sessions = require(process.cwd() + '/backend/lib/session.js');
 
 //Pyntemp.Telldus = require('./telldus.js');
-Pyntemp.Telldus = require(fileroot + 'backend/mock-telldus.js');
+Pyntemp.Telldus = require(process.cwd() + '/backend/mock-telldus.js');
 
-Pyntemp.Rules = require(fileroot + 'backend/rules.js');
+Pyntemp.Rules = require(process.cwd() + '/backend/rules.js');
 
 http.createServer(function(request, response) {
 	var session = sessions.lookupOrCreate(request);
