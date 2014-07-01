@@ -5,20 +5,20 @@ var fs = require('fs');
 var url = require("url");
 var util = require('util');
 
-var sessions = require('./lib/session.js');
-
-//Pyntemp.Telldus = require('./telldus.js');
-Pyntemp.Telldus = require('./mock-telldus.js');
-
-Pyntemp.Rules = require('./rules.js');
-
 process = process || {};
 process.env = process.env || {};
 var port = process.env.PORT || 1337;
 
 process.cwd = process.cwd || function() {return ".."};
 
-var fileroot = process.cwd() + "/frontend"
+var fileroot = process.cwd() + "/frontend";
+
+var sessions = require(fileroot + 'backend/lib/session.js');
+
+//Pyntemp.Telldus = require('./telldus.js');
+Pyntemp.Telldus = require(fileroot + 'backend/mock-telldus.js');
+
+Pyntemp.Rules = require(fileroot + 'backend/rules.js');
 
 http.createServer(function(request, response) {
 	var session = sessions.lookupOrCreate(request);
