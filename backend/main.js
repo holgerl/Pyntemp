@@ -9,7 +9,7 @@ process = process || {};
 process.env = process.env || {};
 var port = process.env.PORT || 1337;
 
-process.cwd = process.cwd || function() {return ".."};
+process.cwd = process.cwd || function() {return "../"};
 
 var fileroot = process.cwd() + "/frontend";
 

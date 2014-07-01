@@ -1,5 +1,10 @@
 var fs = require('fs');
 
+process = process || {};
+process.cwd = process.cwd || function() {return "../"};
+
+var rulesFile = process.cwd() + "/backend/data/rules.txt";
+
 var Rule = function(deviceId, sensorId, deviceName, sensorName, onThreshold, offThreshold) {
 	this.deviceId = deviceId;
 	this.sensorId = sensorId;
@@ -10,7 +15,7 @@ var Rule = function(deviceId, sensorId, deviceName, sensorName, onThreshold, off
 }
 
 var writeRules = function(rules, callback) {
-	fs.writeFile("./data/rules.txt", JSON.stringify(rules), function(err) {
+	fs.writeFile(rulesFile, JSON.stringify(rules), function(err) {
 		if(err) {
 			callback({result: "failed"});
 			throw err;
@@ -31,7 +36,7 @@ var logMembers = function(object) {
 }
 
 var readRules = function(callback) {
-	fs.readFile("./data/rules.txt", function (err, data) {
+	fs.readFile(rulesFile, function (err, data) {
 		if (err) {
 			callback({result: "failed"});
 			throw err;
