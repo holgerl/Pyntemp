@@ -5,6 +5,8 @@ var OAuth = require('oauth').OAuth;
 var url = require("url");
 var sessions = require('./lib/session.js');
 
+var host = process.env.PORT ? 'http://polar-caverns-3531.herokuapp.com' : 'http://127.0.0.1:1337';
+
 Pyntemp.Sensor = function(sensor) {
 	this.id = sensor.id;
 	this.name = sensor.name;
@@ -73,10 +75,10 @@ Pyntemp.Telldus.startDevice = function (session, turnOn, deviceid, callback) {
 Pyntemp.Telldus.doAuthorizationRedirect = function(request, response) {
 	var oa = new OAuth("http://api.telldus.com/oauth/requestToken",
 	                  "http://api.telldus.com/oauth/accessToken",
-	                  "FEHUVEW84RAFR5SP22RABURUPHAFRUNU", // OAuth consumer token
-	                  "ZUXEVEGA9USTAZEWRETHAQUBUR69U6EF", // OAuth consumer secret
+	                  "TIUYIUWOEKLA3HOAMLEJ9AGOUTHLADLE", // OAuth consumer token
+	                  "JLATHIES1LE6LAPIETHIEVL94607IAGO", // OAuth consumer secret
 	                  "1.0",
-	                  "http://127.0.0.1:1337/loginCallback",
+	                  host + "/loginCallback",
 	                  "HMAC-SHA1");
 					  
 	var session = sessions.lookupOrCreate(request);
@@ -123,7 +125,7 @@ Pyntemp.Telldus.loginCallback = function(request, response) {
 				session.data.oauth_access_token = oauth_access_token;
 				session.data.oauth_access_token_secret = oauth_access_token_secret;
 				
-				response.writeHead(302, {'Location': 'http://127.0.0.1:1337/index.html'});
+				response.writeHead(302, {'Location': host + '/index.html'});
 				response.end();
 	 		}
 		}
