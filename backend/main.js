@@ -5,11 +5,8 @@ var fs = require('fs');
 var url = require("url");
 var util = require('util');
 
-process = process || {};
 process.env = process.env || {};
 var port = process.env.PORT || 1337;
-
-process.cwd = process.cwd || function() {return "../"};
 
 var fileroot = process.cwd() + "/frontend";
 

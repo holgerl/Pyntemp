@@ -1,8 +1,5 @@
 var fs = require('fs');
 
-process = process || {};
-process.cwd = process.cwd || function() {return "../"};
-
 var rulesFile = process.cwd() + "/backend/data/rules.txt";
 
 var Rule = function(deviceId, sensorId, deviceName, sensorName, onThreshold, offThreshold) {
