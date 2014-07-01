@@ -12,7 +12,7 @@ Pyntemp.Telldus = require('./mock-telldus.js');
 
 Pyntemp.Rules = require('./rules.js');
 
-var process = process || {};
+process = process || {};
 process.env = process.env || {};
 var port = process.env.PORT || 1337;
 
