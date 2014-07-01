@@ -16,6 +16,10 @@ process = process || {};
 process.env = process.env || {};
 var port = process.env.PORT || 1337;
 
+process.cwd = process.cwd || function() {return ".."};
+
+var fileroot = process.cwd() + "/frontend"
+
 http.createServer(function(request, response) {
 	var session = sessions.lookupOrCreate(request);
 
@@ -61,7 +65,7 @@ http.createServer(function(request, response) {
 	} else if (parsedUrl.pathname== "/login") {
 		Pyntemp.Telldus.doAuthorizationRedirect(request, response);
 	} else {
-		fs.readFile('../frontend' + request.url, function(error, content) {
+		fs.readFile(fileroot + request.url, function(error, content) {
 			if (error) {
 				console.log('ERROR requesting ' + request.url);
 				console.log(error);
