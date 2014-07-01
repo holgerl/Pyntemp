@@ -12,6 +12,10 @@ Pyntemp.Telldus = require('./mock-telldus.js');
 
 Pyntemp.Rules = require('./rules.js');
 
+var process = process || {};
+var process.env = process.env || {};
+var port = process.env.PORT || 1337;
+
 http.createServer(function(request, response) {
 	var session = sessions.lookupOrCreate(request);
 
@@ -71,8 +75,8 @@ http.createServer(function(request, response) {
 			}
 		});		
 	}
-}).listen(1337, '127.0.0.1');
-console.log('Server running at http://127.0.0.1:1337/');
+}).listen(port);
+console.log('Server running at http://localhost:' + port);
 
 Pyntemp.writeJson = function(response) {
 	return function(result) {
