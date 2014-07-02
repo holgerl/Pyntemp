@@ -12,8 +12,8 @@ var fileroot = process.cwd() + "/frontend";
 
 var sessions = require(process.cwd() + '/backend/lib/session.js');
 
-Pyntemp.Telldus = require(process.cwd() + '/backend/telldus.js');
-//Pyntemp.Telldus = require(process.cwd() + '/backend/mock-telldus.js');
+//Pyntemp.Telldus = require(process.cwd() + '/backend/telldus.js');
+Pyntemp.Telldus = require(process.cwd() + '/backend/mock-telldus.js');
 
 Pyntemp.Rules = require(process.cwd() + '/backend/rules.js');
 
@@ -109,6 +109,6 @@ Pyntemp.intervalFunction = function() {
 	});
 }
 
-//Pyntemp.intervalFunction();
-//setInterval(Pyntemp.intervalFunction, 1000*60);
+Pyntemp.intervalFunction();
+setInterval(Pyntemp.intervalFunction, 1000*60);
 
