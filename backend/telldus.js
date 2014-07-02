@@ -5,7 +5,7 @@ var OAuth = require('oauth').OAuth;
 var url = require("url");
 var sessions = require('./lib/session.js');
 
-var host = process.env.PORT ? 'http://polar-caverns-3531.herokuapp.com' : 'http://127.0.0.1:1337';
+var host = process.env.PORT ? 'http://pyntemp.herokuapp.com' : 'http://127.0.0.1:1337';
 
 Pyntemp.Sensor = function(sensor) {
 	this.id = sensor.id;
