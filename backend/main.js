@@ -109,6 +109,8 @@ Pyntemp.intervalFunction = function() {
 	});
 }
 
-Pyntemp.intervalFunction();
-setInterval(Pyntemp.intervalFunction, 1000*60);
+// Disse er kommentert ut fordi session ikke finnes når man skal kjøre intervalFunction
+// Session brukes for å logge inn hos Telldus
+//Pyntemp.intervalFunction();
+//setInterval(Pyntemp.intervalFunction, 1000*60);
 
