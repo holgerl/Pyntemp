@@ -102,8 +102,8 @@ Pyntemp.getDateString = function() {
 
 Pyntemp.intervalFunction = function() {
 	console.log("-- " + Pyntemp.getDateString() + " --");
-	Pyntemp.Telldus.getSensorList(function(sensors) {
-		Pyntemp.Telldus.getDevices(function(devices) {
+	Pyntemp.Telldus.getSensorList(session, function(sensors) {
+		Pyntemp.Telldus.getDevices(function(session, devices) {
 			Pyntemp.Rules.evaluateRules(sensors.sensors, devices.devices, Pyntemp.Telldus);
 		});
 	});
