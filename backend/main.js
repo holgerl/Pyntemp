@@ -12,8 +12,8 @@ var fileroot = process.cwd() + "/frontend";
 
 var sessions = require(process.cwd() + '/backend/lib/session.js');
 
-Pyntemp.Telldus = require(process.cwd() + '/backend/telldus.js');
-//Pyntemp.Telldus = require(process.cwd() + '/backend/mock-telldus.js');
+//Pyntemp.Telldus = require(process.cwd() + '/backend/telldus.js');
+Pyntemp.Telldus = require(process.cwd() + '/backend/mock-telldus.js');
 
 Pyntemp.Rules = require(process.cwd() + '/backend/rules.js');
 
@@ -102,13 +102,15 @@ Pyntemp.getDateString = function() {
 
 Pyntemp.intervalFunction = function() {
 	console.log("-- " + Pyntemp.getDateString() + " --");
-	Pyntemp.Telldus.getSensorList(function(sensors) {
-		Pyntemp.Telldus.getDevices(function(devices) {
+	Pyntemp.Telldus.getSensorList(session, function(sensors) {
+		Pyntemp.Telldus.getDevices(function(session, devices) {
 			Pyntemp.Rules.evaluateRules(sensors.sensors, devices.devices, Pyntemp.Telldus);
 		});
 	});
 }
 
+// Disse er kommentert ut fordi session ikke finnes når man skal kjøre intervalFunction
+// Session brukes for å logge inn hos Telldus
 //Pyntemp.intervalFunction();
 //setInterval(Pyntemp.intervalFunction, 1000*60);
 
