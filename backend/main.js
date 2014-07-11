@@ -12,8 +12,8 @@ var fileroot = process.cwd() + "/frontend";
 
 var sessions = require(process.cwd() + '/backend/lib/session.js');
 
-//Pyntemp.Telldus = require(process.cwd() + '/backend/telldus.js');
-Pyntemp.Telldus = require(process.cwd() + '/backend/mock-telldus.js');
+Pyntemp.Telldus = require(process.cwd() + '/backend/telldus.js');
+//Pyntemp.Telldus = require(process.cwd() + '/backend/mock-telldus.js');
 
 Pyntemp.Rules = require(process.cwd() + '/backend/rules.js');
 
@@ -33,6 +33,12 @@ http.createServer(function(request, response) {
 		response.end();
 		return;
 	}
+	
+	if (parsedUrl.pathname == "/favicon.ico") {
+		response.writeHead(302, {'Location': 'index.html'});
+		response.end();
+		return;
+	}
 
 	if (parsedUrl.pathname == "/sensors") {
 		Pyntemp.Telldus.getSensorList(session, Pyntemp.writeJson(response));
@@ -47,13 +53,16 @@ http.createServer(function(request, response) {
 	} else if (parsedUrl.pathname== "/rules") {
 		Pyntemp.Rules.getRules(Pyntemp.writeJson(response));
 	} else if (parsedUrl.pathname== "/addRule") {
-		var deviceId = parsedUrl.query.deviceId;
-		var sensorId = parsedUrl.query.sensorId;
-		var deviceName = parsedUrl.query.deviceName;
-		var sensorName = parsedUrl.query.sensorName;
-		var onThreshold = parseInt(parsedUrl.query.onThreshold);
-		var offThreshold = parseInt(parsedUrl.query.offThreshold);
-		Pyntemp.Rules.addRule(new Pyntemp.Rules.Rule(deviceId, sensorId, deviceName, sensorName, onThreshold, offThreshold), Pyntemp.writeJson(response));
+		Pyntemp.Telldus.getUserProfile(session, function(data) {
+			var userId = data.email;
+			var deviceId = parsedUrl.query.deviceId;
+			var sensorId = parsedUrl.query.sensorId;
+			var deviceName = parsedUrl.query.deviceName;
+			var sensorName = parsedUrl.query.sensorName;
+			var onThreshold = parseInt(parsedUrl.query.onThreshold);
+			var offThreshold = parseInt(parsedUrl.query.offThreshold);
+			Pyntemp.Rules.addRule(new Pyntemp.Rules.Rule(userId, deviceId, sensorId, deviceName, sensorName, onThreshold, offThreshold), Pyntemp.writeJson(response));
+		});
 	} else if (parsedUrl.pathname== "/removeRule") {
 		var index = parsedUrl.query.index;
 		Pyntemp.Rules.removeRule(index, Pyntemp.writeJson(response));
@@ -102,15 +111,17 @@ Pyntemp.getDateString = function() {
 
 Pyntemp.intervalFunction = function() {
 	console.log("-- " + Pyntemp.getDateString() + " --");
-	Pyntemp.Telldus.getSensorList(session, function(sensors) {
-		Pyntemp.Telldus.getDevices(function(session, devices) {
-			Pyntemp.Rules.evaluateRules(sensors.sensors, devices.devices, Pyntemp.Telldus);
+	
+	Pyntemp.Rules.readSessions(function(sessions) {
+		var session = {data: sessions[Object.keys(sessions)[0]]}; // TODO: Må hente sesjonen til regelen, ikke bare den første sesjonen man finner
+		Pyntemp.Telldus.getSensorList(session, function(sensors) {
+			Pyntemp.Telldus.getDevices(session, function(devices) {
+				Pyntemp.Rules.evaluateRules(session, sensors.sensors, devices.devices, Pyntemp.Telldus);
+			});
 		});
 	});
 }
 
-// Disse er kommentert ut fordi session ikke finnes når man skal kjøre intervalFunction
-// Session brukes for å logge inn hos Telldus
-//Pyntemp.intervalFunction();
-//setInterval(Pyntemp.intervalFunction, 1000*60);
+Pyntemp.intervalFunction();
+setInterval(Pyntemp.intervalFunction, 1000*60);
 

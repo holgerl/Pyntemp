@@ -33,6 +33,10 @@ Pyntemp.Telldus.loginCallback = function(request, response) {
 	response.end();
 }
 
+Pyntemp.Telldus.getUserProfile = function(session, callback) {
+	return {"firstname":"Ola","lastname":"Nordmann","email":"ola@nordmann.no","credits":0,"pro":-1};
+}
+
 exports.getSensorList = Pyntemp.Telldus.getSensorList;
 exports.getDevices = Pyntemp.Telldus.getDevices;
 exports.startDevice = Pyntemp.Telldus.startDevice;

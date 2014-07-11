@@ -1,8 +1,10 @@
 var fs = require('fs');
 
 var rulesFile = process.cwd() + "/backend/data/rules.txt";
+var sessionsFile = process.cwd() + "/backend/data/sessions.txt";
 
-var Rule = function(deviceId, sensorId, deviceName, sensorName, onThreshold, offThreshold) {
+var Rule = function(userId, deviceId, sensorId, deviceName, sensorName, onThreshold, offThreshold) {
+	this.userId = userId;
 	this.deviceId = deviceId;
 	this.sensorId = sensorId;
 	this.deviceName = deviceName;
@@ -11,14 +13,49 @@ var Rule = function(deviceId, sensorId, deviceName, sensorName, onThreshold, off
 	this.offThreshold = offThreshold;
 }
 
-var writeRules = function(rules, callback) {
-	fs.writeFile(rulesFile, JSON.stringify(rules), function(err) {
+var writeFile = function(filePath, data, callback) {
+	fs.writeFile(filePath, JSON.stringify(data), function(err) {
+		console.log(JSON.stringify(data));
 		if(err) {
 			callback({result: "failed"});
 			throw err;
 		}
 		callback({result: "success"});
 	});
+}
+
+var writeRules = function(rules, callback) {
+	writeFile(rulesFile, rules, callback);
+}
+
+var writeSessions = function(sessions, callback) {
+	writeFile(sessionsFile, sessions, function(data) {
+		console.log(data);
+		callback(data);
+	});
+}
+
+var readFile = function(filePath, callback) {
+	fs.readFile(filePath, function (err, data) {
+		if (err) {
+			callback({result: "failed"});
+			throw err;
+		}
+		if ((data + "").trim().length > 0) 
+			var data = JSON.parse(data + "");
+		else
+			var data = []; // TODO: When reading sessions, this must be {}
+		
+		callback(data);
+	});
+}
+
+var readRules = function(callback) {
+	readFile(rulesFile, callback);
+}
+
+var readSessions = function(callback) {
+	readFile(sessionsFile, callback);
 }
 
 var logMembers = function(object) {
@@ -30,21 +67,6 @@ var logMembers = function(object) {
 	string += "}";
 	console.log(string);
 	return string;
-}
-
-var readRules = function(callback) {
-	fs.readFile(rulesFile, function (err, data) {
-		if (err) {
-			callback({result: "failed"});
-			throw err;
-		}
-		if ((data + "").trim().length > 0) 
-			var rules = JSON.parse(data + "");
-		else
-			var rules = [];
-		
-		callback(rules);
-	});
 }
 
 var addRule = function(rule, callback) {
@@ -67,9 +89,19 @@ var getRules = function(callback) {
 	}); 
 }
 
-var evaluateRules = function(sensorList, deviceList, Telldus) {
+var updateSession = function(session, Telldus, callback) {
+	readSessions(function(sessions) {
+		Telldus.getUserProfile(session, function(data) {
+			sessions[data.email] = session.data;
+			writeSessions(sessions, callback);
+		});
+	});
+}
+
+var evaluateRules = function(session, sensorList, deviceList, Telldus) {
 	var sensorMap = mapify(sensorList, function(sensor) {return sensor.id});
 	var deviceMap = mapify(deviceList, function(device) {return device.id});
+
 	readRules(function(rules) {
 		for (var index in rules) {
 			var rule = rules[index];
@@ -81,10 +113,10 @@ var evaluateRules = function(sensorList, deviceList, Telldus) {
 			
 			if (temperature <= rule.onThreshold) {
 				console.log("-> TURNING ON " + device.name + verboseText);
-				Telldus.startDevice(true, device.id, function() {});
+				Telldus.startDevice(session, true, device.id, function() {});
 			} else if (temperature >= rule.offThreshold) {
 				console.log("-> TURNING OFF " + device.name + verboseText);
-				Telldus.startDevice(false, device.id, function() {});
+				Telldus.startDevice(session, false, device.id, function() {});
 			} else {
 				console.log("-> DID NOTHING " + device.name + verboseText);
 			}
@@ -106,3 +138,5 @@ module.exports.getRules = getRules;
 module.exports.addRule = addRule;
 module.exports.removeRule = removeRule;
 module.exports.evaluateRules = evaluateRules;
+module.exports.updateSession = updateSession;
+module.exports.readSessions = readSessions;

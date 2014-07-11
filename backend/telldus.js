@@ -5,6 +5,8 @@ var OAuth = require('oauth').OAuth;
 var url = require("url");
 var sessions = require('./lib/session.js');
 
+rules = require(process.cwd() + '/backend/rules.js');
+
 var host = process.env.PORT ? 'http://pyntemp.herokuapp.com' : 'http://127.0.0.1:1337';
 
 Pyntemp.Sensor = function(sensor) {
@@ -51,17 +53,24 @@ Pyntemp.Telldus.getSensorList = function(session, callback) {
 	});
 }
 
+Pyntemp.Telldus.getUserProfile = function(session, callback) {
+	var path = "user/profile";
+	Pyntemp.Telldus.getProtectedResource(session, path, function(data) {
+		callback(data);
+	});
+}
+
 Pyntemp.Telldus.getDevices = function(session, callback) {
 	var path = "devices/list";
 	var devices = new Pyntemp.Devices();
 	Pyntemp.Telldus.getProtectedResource(session, path, function(data) {
 		data.devices = data.device;
-		data.device = undefined;	
+		data.device = undefined;
 		callback(data);
 	});
 }
 
-Pyntemp.Telldus.startDevice = function (session, turnOn, deviceid, callback) {
+Pyntemp.Telldus.startDevice = function(session, turnOn, deviceid, callback) {
 	var path = "device/turnOff?id=" + deviceid;
 	if (turnOn) {
 		path = "device/turnOn?id=" + deviceid;
@@ -125,6 +134,8 @@ Pyntemp.Telldus.loginCallback = function(request, response) {
 				session.data.oauth_access_token = oauth_access_token;
 				session.data.oauth_access_token_secret = oauth_access_token_secret;
 				
+				rules.updateSession(session, Pyntemp.Telldus, function() {});
+				
 				response.writeHead(302, {'Location': host + '/index.html'});
 				response.end();
 	 		}
@@ -157,3 +168,4 @@ exports.getDevices = Pyntemp.Telldus.getDevices;
 exports.startDevice = Pyntemp.Telldus.startDevice;
 exports.doAuthorizationRedirect = Pyntemp.Telldus.doAuthorizationRedirect;
 exports.loginCallback = Pyntemp.Telldus.loginCallback;
+exports.getUserProfile = Pyntemp.Telldus.getUserProfile;
