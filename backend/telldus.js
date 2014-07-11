@@ -6,6 +6,7 @@ var url = require("url");
 var sessions = require('./lib/session.js');
 
 rules = require(process.cwd() + '/backend/rules.js');
+oauthSecrets = require(process.cwd() + '/backend/oauth-secrets.js');
 
 var host = process.env.PORT ? 'http://pyntemp.herokuapp.com' : 'http://127.0.0.1:1337';
 
@@ -84,8 +85,8 @@ Pyntemp.Telldus.startDevice = function(session, turnOn, deviceid, callback) {
 Pyntemp.Telldus.doAuthorizationRedirect = function(request, response) {
 	var oa = new OAuth("http://api.telldus.com/oauth/requestToken",
 	                  "http://api.telldus.com/oauth/accessToken",
-	                  "TIUYIUWOEKLA3HOAMLEJ9AGOUTHLADLE", // OAuth consumer token
-	                  "JLATHIES1LE6LAPIETHIEVL94607IAGO", // OAuth consumer secret
+	                  oauthSecrets.token,
+	                  oauthSecrets.secret,
 	                  "1.0",
 	                  host + "/loginCallback",
 	                  "HMAC-SHA1");
