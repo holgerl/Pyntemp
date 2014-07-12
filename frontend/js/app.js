@@ -34,7 +34,7 @@
   Pyntemp.Sensors.SensorsView = Simple.View.extend({
     template: '<a href="#sensors" class="accordianTrigger">Sensorer</a><ul class="list">' + 
       '{{#sensors}}' +
-      '<li> <span>{{name}}</span> <span class="temperature">{{temperature}} &deg;C </span> <span class="humidity">{{humidity}}%</span></li>' +
+      '<li> <span>{{name}}</span> <span class="temperature">{{temperature}} &deg;C </span> <span class="humidity">{{humidity}}%</span> <span class="lastUpdated">({{lastUpdated}})</span></li>' +
       '{{/sensors}}' +
       '</ul>',
     initialize: function(options) {
