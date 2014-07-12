@@ -114,6 +114,10 @@ Pyntemp.intervalFunction = function() {
 	
 	Pyntemp.Rules.readSessions(function(sessions) {
 		var session = {data: sessions[Object.keys(sessions)[0]]}; // TODO: Må hente sesjonen til regelen, ikke bare den første sesjonen man finner
+		if (session.data == undefined || session.data.oa == undefined) {
+			console.log("No session data found for intervalFunction");
+			return;
+		}
 		Pyntemp.Telldus.getSensorList(session, function(sensors) {
 			Pyntemp.Telldus.getDevices(session, function(devices) {
 				Pyntemp.Rules.evaluateRules(session, sensors.sensors, devices.devices, Pyntemp.Telldus);
