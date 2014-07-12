@@ -3,6 +3,9 @@ var fs = require('fs');
 var rulesFile = process.cwd() + "/backend/data/rules.txt";
 var sessionsFile = process.cwd() + "/backend/data/sessions.txt";
 
+fs.openSync(rulesFile, "a");
+fs.openSync(sessionsFile, "a");
+
 var Rule = function(userId, deviceId, sensorId, deviceName, sensorName, onThreshold, offThreshold) {
 	this.userId = userId;
 	this.deviceId = deviceId;
@@ -44,18 +47,24 @@ var readFile = function(filePath, callback) {
 		if ((data + "").trim().length > 0) 
 			var data = JSON.parse(data + "");
 		else
-			var data = []; // TODO: When reading sessions, this must be {}
+			var data = null;
 		
 		callback(data);
 	});
 }
 
 var readRules = function(callback) {
-	readFile(rulesFile, callback);
+	readFile(rulesFile, function(rules) {
+		if(rules == null) rules = [];
+		callback(rules);
+	});
 }
 
 var readSessions = function(callback) {
-	readFile(sessionsFile, callback);
+	readFile(sessionsFile, function(sessions) {
+		if(sessions == null) sessions = {};
+		callback(sessions);
+	});
 }
 
 var logMembers = function(object) {
