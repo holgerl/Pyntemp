@@ -15,7 +15,7 @@ Pyntemp.Sensor = function(sensor) {
 	this.name = sensor.name;
 	this.temperature = sensor.temp;
 	this.humidity = sensor.humidity;
-	this.lastUpdated = new Date(sensor.lastUpdated).toString();
+	this.lastUpdated = new Date(sensor.lastUpdated*1000).toString();
 }
 
 Pyntemp.Sensors = function() {
