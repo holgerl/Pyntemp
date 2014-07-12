@@ -18,6 +18,8 @@ Pyntemp.Telldus = require(process.cwd() + '/backend/telldus.js');
 Pyntemp.Rules = require(process.cwd() + '/backend/rules.js');
 
 http.createServer(function(request, response) {
+	console.log(request.url);
+
 	var session = sessions.lookupOrCreate(request);
 
 	var parsedUrl = url.parse(request.url, true);
