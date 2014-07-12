@@ -144,8 +144,7 @@
       this.el = options.el;
       this.el.on("click", ".accordianTrigger", Pyntemp.gui.toggleAccordian);
 
-	  
-	  var ruleAction = new Pyntemp.Rules.RuleAction();  
+	  var ruleAction = new Pyntemp.Rules.RuleAction();
 	  this.el.on("click", "#saveRule", function(event) {
 		var deviceId = $('#selectDevice').find(":selected").attr("value");
 		var deviceName = $('#selectDevice').find(":selected").text();
@@ -185,7 +184,7 @@
 				'Skru på <strong>{{deviceName}}</strong> hvis <strong>{{sensorName}}</strong> er lavere enn <strong>{{onThreshold}}</strong> &deg;C, skru av når den når <strong>{{offThreshold}}</strong> &deg;C' +
          '<input type="submit" value="endre"/>' +
 			   '<input type="submit" value="deaktiver"/>' + 
-         '<input type="submit" value="slett"/>' +
+         '<input type="submit" class="deleteRule" value="slett"/>' +
       '</li>' +
 			'{{/rules}}' +
 		'</ul>',
@@ -194,6 +193,13 @@
       this.rules.on("fetch:finished", this.render, this);
       this.el = options.el;
       this.el.on("click", ".accordianTrigger", Pyntemp.gui.toggleAccordian);
+	  
+	  var ruleAction = new Pyntemp.Rules.RuleAction();
+	  this.el.on("click", ".deleteRule", function(event) {
+		var ruleIndex = $(event.target).parent().index();
+        ruleAction.deleteRule(ruleIndex);
+		ruleAction.on("fetch:finished", function() {window.location.reload()}, this);
+      });
     },
     render: function() {
       var html = Mustache.to_html(this.template, this.rules.attrs());
