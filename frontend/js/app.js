@@ -182,10 +182,10 @@
 			'{{#rules}}' +
 			'<li>' +
 				'Skru på <strong>{{deviceName}}</strong> hvis <strong>{{sensorName}}</strong> er lavere enn <strong>{{onThreshold}}</strong> &deg;C, skru av når den når <strong>{{offThreshold}}</strong> &deg;C' +
-         '<input type="submit" value="endre"/>' +
-			   '<input type="submit" value="deaktiver"/>' + 
-         '<input type="submit" class="deleteRule" value="slett"/>' +
-      '</li>' +
+				'<input type="submit" class="changeRule" value="endre"/>' +
+				'<input type="submit" class="deactivateRule" value="deaktiver"/>' + 
+				'<input type="submit" class="deleteRule" value="slett"/>' +
+			'</li>' +
 			'{{/rules}}' +
 		'</ul>',
     initialize: function(options) {
@@ -200,6 +200,12 @@
         ruleAction.deleteRule(ruleIndex);
 		ruleAction.on("fetch:finished", function() {window.location.reload()}, this);
       });
+	  this.el.on("click", ".changeRule", function(event) {
+		alert("not implemented");
+	  });
+	  this.el.on("click", ".deactivateRule", function(event) {
+		alert("not implemented");
+	  });
     },
     render: function() {
       var html = Mustache.to_html(this.template, this.rules.attrs());
