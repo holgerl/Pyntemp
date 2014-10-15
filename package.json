@@ -12,6 +12,6 @@
     "node": "0.10.x"
   },
   "dependencies": {
-    
+    "mongojs": "0.14.2"
   }
 }

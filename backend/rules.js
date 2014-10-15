@@ -1,10 +1,56 @@
 var fs = require('fs');
 
-var rulesFile = process.cwd() + "/backend/data/rules.txt";
-var sessionsFile = process.cwd() + "/backend/data/sessions.txt";
+try {
+	var databaseUrl = process.env.MONGOLAB_URI || "localhost:27017/pyntemp";
+	var collections = ["rules", "sessions"]
+	var db = require("mongojs").connect(databaseUrl, collections);
+} catch (err) {
+	console.log("FAILED TO CONNECT TO DATABASE: " + err);
+}
+	
+saveUpdateCallback = function(err, saved) {
+	if (err) throw err;
+	
+	if (!saved) {
+		console.log("No data saved/updated");
+	} else { 
+		console.log("Data saved/updated");
+	}
+}
+	
+var saveData = function(type, id, data, callback) {
+	data.id = id;
+	console.log("saving data: " + data);
+	db[type].find({id: id}, function(err, foundData) {
+		if (err) throw err;
+		
+		if (foundData.length == 0) {
+			db[type].save(data, saveUpdateCallback);
+		} else {
+			db[type].update({id: id}, data, saveUpdateCallback);
+		}
+		callback({result: "success"});
+	});
+}
 
-fs.openSync(rulesFile, "a");
-fs.openSync(sessionsFile, "a");
+var loadData = function(type, id, callback) {
+	if (callback == undefined) {
+		console.log("ERROR: No callback defined");
+		return;
+	}
+
+	db[type].find({id: id}, function(err, data) {
+		if (err) throw err;
+		
+		if (data.length == 0) {
+			console.log("No data found");
+			callback(null)
+		} else {
+			console.log("Found data: " + data[0]);
+			callback(data[0])
+		}
+	});
+}
 
 var Rule = function(userId, deviceId, sensorId, deviceName, sensorName, onThreshold, offThreshold) {
 	this.userId = userId;
@@ -16,52 +62,26 @@ var Rule = function(userId, deviceId, sensorId, deviceName, sensorName, onThresh
 	this.offThreshold = offThreshold;
 }
 
-var writeFile = function(filePath, data, callback) {
-	fs.writeFile(filePath, JSON.stringify(data), function(err) {
-		console.log(JSON.stringify(data));
-		if(err) {
-			callback({result: "failed"});
-			throw err;
-		}
-		callback({result: "success"});
-	});
-}
-
 var writeRules = function(rules, callback) {
-	writeFile(rulesFile, rules, callback);
+	saveData("rules", 0, rules, callback);
 }
 
 var writeSessions = function(sessions, callback) {
-	writeFile(sessionsFile, sessions, function(data) {
+	saveData("sessions", 0, sessions, function(data) {
 		console.log(data);
 		callback(data);
 	});
 }
 
-var readFile = function(filePath, callback) {
-	fs.readFile(filePath, function (err, data) {
-		if (err) {
-			callback({result: "failed"});
-			throw err;
-		}
-		if ((data + "").trim().length > 0) 
-			var data = JSON.parse(data + "");
-		else
-			var data = null;
-		
-		callback(data);
-	});
-}
-
 var readRules = function(callback) {
-	readFile(rulesFile, function(rules) {
-		if(rules == null) rules = [];
+	loadData("rules", 0, function(rules) {
+		if(rules == null) rules = {rules:[]};
 		callback(rules);
 	});
 }
 
 var readSessions = function(callback) {
-	readFile(sessionsFile, function(sessions) {
+	loadData("sessions", 0, function(sessions) {
 		if(sessions == null) sessions = {};
 		callback(sessions);
 	});
@@ -80,28 +100,28 @@ var logMembers = function(object) {
 
 var addRule = function(rule, callback) {
 	readRules(function(rules) {
-		rules.push(rule);
+		rules.rules.push(rule);
 		writeRules(rules, callback);
 	});
 }
 
 var removeRule = function(index, callback) {
 	readRules(function(rules) {
-		rules.splice(index, 1);
+		rules.rules.splice(index, 1);
 		writeRules(rules, callback);
 	});
 }
 
 var getRules = function(callback) {
 	readRules(function(rules) {
-		callback({rules: rules});
+		callback(rules);
 	}); 
 }
 
 var updateSession = function(session, Telldus, callback) {
 	readSessions(function(sessions) {
 		Telldus.getUserProfile(session, function(data) {
-			sessions[data.email] = session.data;
+			sessions["0"] = session.data;
 			writeSessions(sessions, callback);
 		});
 	});
@@ -112,14 +132,13 @@ var evaluateRules = function(session, sensorList, deviceList, Telldus) {
 	var deviceMap = mapify(deviceList, function(device) {return device.id});
 
 	readRules(function(rules) {
-		for (var index in rules) {
+		for (var index in rules.rules) {
 			var rule = rules[index];
+			console.log("EVALUATING RULE " + JSON.stringify(rule));
 			var sensor = sensorMap[rule.sensorId];
 			var device = deviceMap[rule.deviceId];
 			var temperature = parseInt(sensor.temperature);
 			var verboseText = " (" + sensor.name + " was " + temperature + " °C)";
-			console.log("EVALUATING RULE " + JSON.stringify(rule));
-			
 			if (temperature <= rule.onThreshold) {
 				console.log("-> TURNING ON " + device.name + verboseText);
 				Telldus.startDevice(session, true, device.id, function() {});

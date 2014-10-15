@@ -46,7 +46,9 @@ Pyntemp.Telldus.getSensorList = function(session, callback) {
 		}
 		for (var index in data.sensor) {
 			Pyntemp.Telldus.getProtectedResource(session, "sensor/info?id=" + data.sensor[index].id, function (data) {
-				sensors.push(new Pyntemp.Sensor({id: data.id, name:data.name, temp: data.data[0].value, humidity: data.data[1].value, lastUpdated: data.lastUpdated}));
+				var temp = data.data[0] != undefined ? data.data[0].value : null;
+				var humidity = data.data[1] != undefined ? data.data[1].value : null;
+				sensors.push(new Pyntemp.Sensor({id: data.id, name:data.name, temp: temp, humidity: humidity, lastUpdated: data.lastUpdated}));
 				if (sensors.length == listLength) {
 					callback(sensors);	
 				}
