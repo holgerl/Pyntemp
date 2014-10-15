@@ -75,7 +75,7 @@ var writeSessions = function(sessions, callback) {
 
 var readRules = function(callback) {
 	loadData("rules", 0, function(rules) {
-		if(rules == null) rules = {rules:[]};
+		if(rules == null || rules == undefined) rules = {rules:[]};
 		callback(rules);
 	});
 }
