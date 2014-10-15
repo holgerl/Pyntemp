@@ -133,9 +133,8 @@ var evaluateRules = function(session, sensorList, deviceList, Telldus) {
 
 	readRules(function(rules) {
 		for (var index in rules.rules) {
-			var rule = rules[index];
-			console.log("EVALUATING RULE " + JSON.stringify(rule));
-			if (rule == undefined) continue;
+			var rule = rules.rules[index];
+			console.log("EVALUATING RULE " + index + ": " + JSON.stringify(rule));
 			var sensor = sensorMap[rule.sensorId];
 			var device = deviceMap[rule.deviceId];
 			var temperature = parseInt(sensor.temperature);
