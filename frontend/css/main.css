@@ -66,14 +66,14 @@ ul.toggleButton li{
     line-height:23px;
     font-size:11px;
     padding:2px 10px 0; 
+    color: #fff;
     
-    background: #E5E5E5;
-    background-image:-webkit-gradient(linear, 0% 0%, 0% 100%, from(#F3F3F3), to(#E5E5E5));
-    text-shadow:0 1px 0 #FFF;
-    border-left:1px solid #D5D5D5;
-    border-top:1px solid #D5D5D5;
-    border-bottom:1px solid #D5D5D5;
-    -webkit-box-shadow:0 1px 0 #FFF inset, 0 0 5px rgba(0, 0, 0, .1) inset, 0 1px 1px rgba(0, 0, 0, .3);
+    background: #609732;
+    background-image:-webkit-gradient(linear, 0% 0%, 0% 100%, from(#89BD5F), to(#609732));
+    border-left:1px solid #609732;
+    border-top:1px solid #609732;
+    border-bottom:1px solid #609732;
+    -webkit-box-shadow:0 1px 0 #609732 inset, 0 0 5px rgba(0, 0, 0, .1) inset, 0 1px 1px rgba(0, 0, 0, .3);
 }
 
 ul.toggleButton li:first-child{
@@ -87,27 +87,23 @@ ul.toggleButton li a{
     text-decoration: none;
     font-family:Helvetica, Arial;
     text-transform:uppercase;
-    color:#a1a1a1;
+    color:#fff !important;
 }
 
 
 ul.toggleButton li.on{
     background: #505050;
-    background-image:-webkit-gradient(linear, 0% 0%, 0% 100%, from(#777), to(#505050));
-    text-shadow:0 -1px 0 #444, 0 0 7px #9AE658;
-    border-right:1px solid #444;
-    border-top:1px solid #444;
-    border-bottom:1px solid #444;
-    -webkit-box-shadow:0 1px 2px rgba(0, 0, 0, .7) inset, 0 1px 0 #FFF;  
-}
-
-ul.toggleButton li:not(.on):active{
-    background-image:-webkit-gradient(linear, 0% 0%, 0% 100%, from(#ddd), to(#f1f1f1));
+    background-image:-webkit-gradient(linear, 0% 0%, 0% 100%, from(#718EA4), to(#3E7213));
+    border-right:1px solid #3E7213;
+    border-left:1px solid #3E7213;
+    border-top:1px solid #3E7213;
+    border-bottom:1px solid #3E7213;
+    -webkit-box-shadow:0 1px 2px rgba(0, 0, 0, .7) inset, 0 1px 0 #3E7213;  
 }
 
 
 ul.toggleButton li.on a{
-    color:#7BBA47;
+    color:#3E7213;
     cursor: default;
 }
 
@@ -115,6 +111,9 @@ ul.toggleButton li.on a{
 
 h1, h2, h3, h4, h5, h6, h7, h8 {
 	color: #003A21;
+}
+strong {
+	font-weight: bold;
 }
 
 * {
@@ -139,6 +138,18 @@ input {
 	margin-left: 10px;
 }
 
+input[type=submit] {
+	background-color: #89BD5F;
+	border: 2px solid #609732;
+}
+
+input[type=submit]:hover {
+	background-color: #609732;
+	border: 2px solid #609732;
+	cursor: pointer;
+}
+
+
 a.accordianTrigger {
 	background: #29506D; /* Old browsers */
 	background-image: linear-gradient(top, #29506D 27%, #123652 64%);
@@ -156,7 +167,6 @@ a.accordianTrigger {
 }
 
 .accordian a {
-	color: #718EA4 !important;
 	text-decoration: none !important;
 }
 

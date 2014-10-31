@@ -1,1 +1,1 @@
-[]
+[{"deviceId":"165525","sensorId":"244836","deviceName":"Pynten fyr (m)","sensorName":"Temp Pynten gang inne (m)","onThreshold":0,"offThreshold":0},{"deviceId":"165525","sensorId":"244836","deviceName":"Pynten fyr (m)","sensorName":"Temp Pynten gang inne (m)","onThreshold":0,"offThreshold":0}]

@@ -124,15 +124,15 @@
 		  '{{#devices}}' +
 		  '<option value="{{id}}">{{name}}</option>' +
           '{{/devices}}' +
-		'</select>' +
+		'</select><br/>' +
 		' hvis ' +
 		'<select id="selectSensor">' +
           '{{#sensors}}' +
 		  '<option value="{{id}}">{{name}}</option>' +
           '{{/sensors}}' +
-		'</select>' +
+		'</select><br/>' +
 		' er lavere enn ' +
-		'<input id="onThreshold" size="2" type="text" value="0"/> &deg;C, ' +
+		'<input id="onThreshold" size="2" type="text" value="0"/> &deg;C, <br/>' +
 		' skru av hvis den når ' +
 		'<input id="offThreshold" size="2" type="text" value="0"/> &deg;C' +
 		' <input id="saveRule" type="submit" value="save"/></div>',
@@ -182,7 +182,7 @@
 		'<ul class="list">' +
 			'{{#rules}}' +
 			'<li>' +
-				'Skru på <strong>{{deviceName}}</strong> hvis <strong>{{sensorName}}</strong> er lavere enn <strong>{{onThreshold}}</strong> &deg;C, skru av når den når <strong>{{offThreshold}}</strong> &deg;C' +
+				'Skru på <strong>{{deviceName}}</strong> <br/>hvis <strong>{{sensorName}}</strong> <br/>er lavere enn <strong>{{onThreshold}}</strong> &deg;C, <br/>skru av når den når <strong>{{offThreshold}}</strong> &deg;C<br/>' +
          '<input type="submit" value="endre"/>' +
 			   '<input type="submit" value="deaktiver"/>' + 
          '<input type="submit" value="slett"/>' +

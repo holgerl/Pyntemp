@@ -8,8 +8,9 @@ Pyntemp.gui.toggleAccordian = function () {
   	target.siblings().toggle();
 }
 
-Pyntemp.gui.toggleButton = function(){
+Pyntemp.gui.toggleButton = function(event){
 	var self= $(this);
+	event.preventDefault();
     self.siblings("li").removeClass("on");
     $(this).addClass("on"); 
 };
