@@ -1,1 +1,0 @@
-Denne trengs for å beholde data-mappen på git
