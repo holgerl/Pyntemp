@@ -2,7 +2,7 @@ var fs = require('fs');
 
 try {
 	var databaseUrl = process.env.MONGOLAB_URI || "localhost:27017/pyntemp";
-	var collections = ["rules", "sessions"]
+	var collections = ["rules", "sessions", "log"];
 	var db = require("mongojs").connect(databaseUrl, collections);
 } catch (err) {
 	console.log("FAILED TO CONNECT TO DATABASE: " + err);
@@ -127,26 +127,41 @@ var updateSession = function(session, Telldus, callback) {
 	});
 }
 
+var saveLog = function(msg) {
+    db.log.save({time: new Date(), msg: msg}, function(err, saved) {
+        if (err) throw err;
+        if (!saved) throw new Error("No data saved/updated");
+    });
+    console.log(msg);
+}
+
+var readLogs = function(limit, callback) {
+    return db.log.find({}, {'_id': false}).limit(limit).sort({time: -1}).toArray(function(err, data) {
+        if (err) throw err;
+		callback(data);
+    });
+}
+
 var evaluateRules = function(session, sensorList, deviceList, Telldus) {
 	var sensorMap = mapify(sensorList, function(sensor) {return sensor.id});
 	var deviceMap = mapify(deviceList, function(device) {return device.id});
-
+    
 	readRules(function(rules) {
 		for (var index in rules.rules) {
 			var rule = rules.rules[index];
-			console.log("EVALUATING RULE " + index + ": " + JSON.stringify(rule));
+            saveLog("EVALUATING RULE " + index + ": " + JSON.stringify(rule));
 			var sensor = sensorMap[rule.sensorId];
 			var device = deviceMap[rule.deviceId];
 			var temperature = parseInt(sensor.temperature);
 			var verboseText = " (" + sensor.name + " was " + temperature + " °C)";
 			if (temperature <= rule.onThreshold) {
-				console.log("-> TURNING ON " + device.name + verboseText);
+				saveLog("-> TURNING ON " + device.name + verboseText);
 				Telldus.startDevice(session, true, device.id, function() {});
 			} else if (temperature >= rule.offThreshold) {
-				console.log("-> TURNING OFF " + device.name + verboseText);
+				saveLog("-> TURNING OFF " + device.name + verboseText);
 				Telldus.startDevice(session, false, device.id, function() {});
 			} else {
-				console.log("-> DID NOTHING " + device.name + verboseText);
+				saveLog("-> DID NOTHING " + device.name + verboseText);
 			}
 		}
 	});
@@ -164,6 +179,7 @@ var mapify = function(list, keyFunction) {
 module.exports.Rule = Rule;
 module.exports.getRules = getRules;
 module.exports.addRule = addRule;
+module.exports.readLogs = readLogs;
 module.exports.removeRule = removeRule;
 module.exports.evaluateRules = evaluateRules;
 module.exports.updateSession = updateSession;
