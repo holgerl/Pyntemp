@@ -52,6 +52,8 @@ http.createServer(function(request, response) {
 	} else if (parsedUrl.pathname== "/stopDevice") {
 		var deviceid = parsedUrl.query.id;
 		Pyntemp.Telldus.startDevice(session, false, deviceid, Pyntemp.writeJson(response));
+	} else if (parsedUrl.pathname== "/log") {
+		Pyntemp.Rules.readLogs(100, Pyntemp.writeJson(response));
 	} else if (parsedUrl.pathname== "/rules") {
 		Pyntemp.Rules.getRules(Pyntemp.writeJson(response));
 	} else if (parsedUrl.pathname== "/addRule") {
