@@ -209,3 +209,8 @@ ul li span {
 	background-size: 25px 25px;
 	padding-left: 40px;	
 }
+
+.lastUpdated {
+	padding-left: 10px;
+	color: #105835;
+}

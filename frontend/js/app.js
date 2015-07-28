@@ -34,7 +34,7 @@
   Pyntemp.Sensors.SensorsView = Simple.View.extend({
     template: '<a href="#sensors" class="accordianTrigger">Sensorer</a><ul class="list">' + 
       '{{#sensors}}' +
-      '<li> <span>{{name}}</span> <span class="temperature">{{temperature}} &deg;C </span> <span class="humidity">{{humidity}}%</span></li>' +
+      '<li> <span>{{name}}</span> <span class="temperature">{{temperature}} &deg;C </span> <span class="humidity">{{humidity}}%</span> <span class="lastUpdated">({{lastUpdated}})</span></li>' +
       '{{/sensors}}' +
       '</ul>',
     initialize: function(options) {
@@ -144,8 +144,7 @@
       this.el = options.el;
       this.el.on("click", ".accordianTrigger", Pyntemp.gui.toggleAccordian);
 
-	  
-	  var ruleAction = new Pyntemp.Rules.RuleAction();  
+	  var ruleAction = new Pyntemp.Rules.RuleAction();
 	  this.el.on("click", "#saveRule", function(event) {
 		var deviceId = $('#selectDevice').find(":selected").attr("value");
 		var deviceName = $('#selectDevice').find(":selected").text();
@@ -182,11 +181,19 @@
 		'<ul class="list">' +
 			'{{#rules}}' +
 			'<li>' +
+<<<<<<< HEAD
 				'Skru på <strong>{{deviceName}}</strong> <br/>hvis <strong>{{sensorName}}</strong> <br/>er lavere enn <strong>{{onThreshold}}</strong> &deg;C, <br/>skru av når den når <strong>{{offThreshold}}</strong> &deg;C<br/>' +
          '<input type="submit" value="endre"/>' +
 			   '<input type="submit" value="deaktiver"/>' + 
          '<input type="submit" value="slett"/>' +
       '</li>' +
+=======
+				'Skru på <strong>{{deviceName}}</strong> hvis <strong>{{sensorName}}</strong> er lavere enn <strong>{{onThreshold}}</strong> &deg;C, skru av når den når <strong>{{offThreshold}}</strong> &deg;C' +
+				'<input type="submit" class="changeRule" value="endre"/>' +
+				'<input type="submit" class="deactivateRule" value="deaktiver"/>' + 
+				'<input type="submit" class="deleteRule" value="slett"/>' +
+			'</li>' +
+>>>>>>> 49db38fa118155af79e249a9fcef82288dcd1d64
 			'{{/rules}}' +
 		'</ul>',
     initialize: function(options) {
@@ -194,6 +201,19 @@
       this.rules.on("fetch:finished", this.render, this);
       this.el = options.el;
       this.el.on("click", ".accordianTrigger", Pyntemp.gui.toggleAccordian);
+	  
+	  var ruleAction = new Pyntemp.Rules.RuleAction();
+	  this.el.on("click", ".deleteRule", function(event) {
+		var ruleIndex = $(event.target).parent().index();
+        ruleAction.deleteRule(ruleIndex);
+		ruleAction.on("fetch:finished", function() {window.location.reload()}, this);
+      });
+	  this.el.on("click", ".changeRule", function(event) {
+		alert("not implemented");
+	  });
+	  this.el.on("click", ".deactivateRule", function(event) {
+		alert("not implemented");
+	  });
     },
     render: function() {
       var html = Mustache.to_html(this.template, this.rules.attrs());
